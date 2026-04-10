@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Celebration Wall</h2>
+{% for p in projects %}
+<div class="project">
+    <h3>{{ p.title }}</h3>
+    <p>Built by: {{ p.author }}</p>
+    <p>COMPLETED!</p>
+</div>
+{% else %}
+<p>No completed projects yet. Be the first!</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MzansiBuilds</title>
+    <style>
+        body { background: black; color: white; font-family: Arial; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        input, textarea, select { width: 100%; padding: 8px; margin: 5px 0; background: #333; color: white; border: 1px solid green; box-sizing: border-box; }
+        button, .btn { background: green; color: white; padding: 10px 20px; border: none; cursor: pointer; text-decoration: none; display: inline-block; margin: 5px; }
+        .project { background: #1a1a1a; padding: 15px; margin: 10px 0; border-left: 4px solid green; }
+        .nav a { color: white; margin: 0 10px; text-decoration: none; }
+        .stage { display: inline-block; padding: 2px 8px; border-radius: 3px; }
+        .planning { background: orange; }
+        .in_progress { background: blue; }
+        .completed { background: green; }
+        .alert { padding: 10px; margin: 10px 0; }
+        .success { background: green; }
+        .error { background: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="/">Home</a>
+            {% if session.user_id %}
+                <a href="/feed">Feed</a>
+                <a href="/new">New Project</a>
+                <a href="/wall">Celebration Wall</a>
+                <a href="/logout">Logout ({{ session.user_name }})</a>
+            {% else %}
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
+            {% endif %}
+        </div>
+        <hr>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, msg in messages %}
+                <div class="alert {{ category }}">{{ msg }}</div>
+            {% endfor %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

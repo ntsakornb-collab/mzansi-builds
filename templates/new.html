@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>New Project</h2>
+<form method="POST">
+    <input name="title" placeholder="Project title" required>
+    <textarea name="desc" placeholder="Description" rows="3"></textarea>
+    <select name="stage">
+        <option value="planning">Planning</option>
+        <option value="in_progress">In Progress</option>
+        <option value="completed">Completed</option>
+    </select>
+    <select name="support">
+        <option value="design">Need design help</option>
+        <option value="code">Need code help</option>
+        <option value="feedback">Need feedback</option>
+    </select>
+    <button type="submit">Create Project</button>
+</form>
+{% endblock %}

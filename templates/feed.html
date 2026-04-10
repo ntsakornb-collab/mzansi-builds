@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Live Feed</h2>
+{% for p in projects %}
+<div class="project">
+    <h3>{{ p.title }}</h3>
+    <p>By: {{ p.author }}</p>
+    <p>Stage: <span class="stage {{ p.stage }}">{{ p.stage }}</span></p>
+    <p>Support needed: {{ p.support }}</p>
+    <a href="/project/{{ p.id }}" class="btn">View & Comment</a>
+</div>
+{% else %}
+<p>No projects yet. <a href="/new" style="color:green;">Create the first one!</a></p>
+{% endfor %}
+{% endblock %}

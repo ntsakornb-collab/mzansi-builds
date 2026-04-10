@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ project.title }}</h2>
+<p>{{ project.desc }}</p>
+<p>Stage: <span class="stage {{ project.stage }}">{{ project.stage }}</span></p>
+<p>Support needed: {{ project.support }}</p>
+<p>Author: {{ project.author }}</p>
+
+<h3>Milestones</h3>
+{% if milestones %}
+<div style="border-left: 3px solid green; padding-left: 15px; margin: 10px 0;">
+    {% for m in milestones %}
+    <div style="margin-bottom: 15px; position: relative;">
+        <span style="position: absolute; left: -22px; top: 3px; width: 12px; height: 12px; background: green; border-radius: 50%; display: inline-block;"></span>
+        <strong style="color: #00cc44;">{{ m.title }}</strong>
+        {% if m.note %}<p style="margin: 4px 0; color: #ccc;">{{ m.note }}</p>{% endif %}
+        <small style="color: #888;">{{ m.date }}</small>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p style="color: #888;">No milestones logged yet.</p>
+{% endif %}
+
+{% if project.user_id == session.user_id %}
+<div class="project" style="margin-top: 10px;">
+    <h4 style="margin-top: 0;">Log a Milestone</h4>
+    <form method="POST" action="/project/{{ project.id }}/milestone">
+        <input name="milestone_title" placeholder="Milestone title (e.g. MVP launched)" required>
+        <textarea name="milestone_note" placeholder="Details (optional)" rows="2"></textarea>
+        <button type="submit">Log Milestone</button>
+    </form>
+</div>
+
+<div class="project" style="margin-top: 10px;">
+    <h4 style="margin-top: 0;">Update Stage</h4>
+    <form method="POST" action="/project/{{ project.id }}/update">
+        <select name="new_stage">
+            <option value="planning" {% if project.stage == 'planning' %}selected{% endif %}>Planning</option>
+            <option value="in_progress" {% if project.stage == 'in_progress' %}selected{% endif %}>In Progress</option>
+            <option value="completed" {% if project.stage == 'completed' %}selected{% endif %}>Completed</option>
+        </select>
+        <button type="submit">Update Stage</button>
+    </form>
+</div>
+{% endif %}
+
+<h3>Comments</h3>
+{% if session.user_id %}
+<form method="POST" action="/project/{{ project.id }}/comment">
+    <textarea name="comment" placeholder="Add a comment..." rows="2" required></textarea>
+    <button type="submit">Comment</button>
+</form>
+
+<form method="POST" action="/project/{{ project.id }}/raise" style="margin-top: 5px;">
+    <button type="submit" style="background: #ff9800;">Raise Hand for Collaboration</button>
+</form>
+{% endif %}
+
+{% for c in comments %}
+<div class="project" style="margin-top: 10px;">
+    <strong>{{ c.author }}</strong>: {{ c.comment }}
+    <small style="color: #888;">({{ c.date }})</small>
+</div>
+{% endfor %}
+
+{% endblock %}
